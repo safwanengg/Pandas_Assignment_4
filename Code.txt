@@ -27,13 +27,15 @@ Purchasing_Analysis_Total
 ########################################################################################################################
 M = purchase_data.loc[purchase_data["Gender"]=="Male"]
 Male = len(M["SN"].unique())
-Male_Percent = round(((Male/Total_Players)*100),2)
 F = purchase_data.loc[purchase_data["Gender"]=="Female"]
 Female = len(F["SN"].unique())
-Female_Percent = round(((Female/Total_Players)*100),2)
 purchase_data["Gender"].unique()
 ONO = purchase_data.loc[purchase_data["Gender"]=="Other / Non-Disclosed"]
 Other_NonDisclosed = len(ONO["SN"].unique())
+Total_Players = [Male, Female, Other_NonDisclosed]
+Total_Players = sum(Total_Players)
+Male_Percent = round(((Male/Total_Players)*100),2)
+Female_Percent = round(((Female/Total_Players)*100),2)
 Other_NonDisclosed_Percent = round(((Other_NonDisclosed/Total_Players)*100),2)
 Gender_Demographics = pd.DataFrame({
     "Gender":["Male","Female","Other/NonDisclosed"],
@@ -128,6 +130,7 @@ z = z.drop_duplicates(subset=['Item Name'], keep='first')
 z.drop(['Purchase ID', 'SN','Age','Gender','Age Group'], axis=1, inplace=True)
 z = z.rename(columns={"Price":"Item Price"})
 Most_Popular_Items = z[["Item ID","Item Name","Purchase Count","Item Price","Total Purchase Value"]]
+Most_Popular_Items = Most_Popular_Items.sort_values("Purchase Count", ascending=False)
 Most_Popular_Items
 ########################################################################################################################
 Most_Profitable_Items = Most_Popular_Items.sort_values("Total Purchase Value", ascending=False)
